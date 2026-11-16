@@ -1,7 +1,9 @@
 ﻿#include <iostream>
 #include <vector>
 #include <iomanip>
-#include "product.h"
+#include <fstream>
+#include "Product.h"
+
 #include "addproduct.h"
 void showProducts(const std::vector<Product>& products) {
     for (size_t i = 0; i < products.size(); i++) {
@@ -30,14 +32,33 @@ void showMostExpensiveProduct(const std::vector<Product>& products) {
 }
 
 int main() {
-    std::vector<Product> products = {
+	std::ofstream outputFile("products.txt");
+
+    std::vector<Product> products =
+    {
         { "Pienas", 1.20, 30 },
         { "Duona", 0.95, 15 },
         { "Suris", 4.50, 8 }
     };
 
+    if (outputFile.is_open())
+    {
+        for (size_t i = 0; i < products.size(); i++)
+        {
+            outputFile << products[i].name << " " << products[i].price << " " << products[i].quantity << "\n";
+        }
+        outputFile << "Issaugota prekiu " << products.size() << "\n";
+        outputFile.close();
+        std::cout << "Duomenys sekmingai issaugoti i products.txt\n";
+    }
+    else
+    {
+		std::cout << "Nepavyko atidaryti failo products.txt\n";
+    }
+
     int choice = -1;
-    while (choice != 0) {
+    while (choice != 0)
+    {
         std::cout << "\n=== Parduotuve ===\n";
         std::cout << "1. Show products\n";
         std::cout << "2. Show most expensive product\n";
